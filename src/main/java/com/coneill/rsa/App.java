@@ -50,9 +50,9 @@ public class App {
             x1 = x1.subtract(y1.multiply(qrem[0]));
 
             if (x.equals(BigInteger.ZERO)) {
-                result[0]=y;
-                result[1]=y0;
-                result[2]=y1;
+                result[0] = y;
+                result[1] = y0;
+                result[2] = y1;
                 return result;
             }
 
@@ -62,9 +62,9 @@ public class App {
             y1 = y1.subtract(x1.multiply(qrem[0]));
 
             if (y.equals(BigInteger.ZERO)) {
-                result[0]=x;
-                result[1]=x0;
-                result[2]=x1;
+                result[0] = x;
+                result[1] = x0;
+                result[2] = x1;
                 return result;
             }
         }
