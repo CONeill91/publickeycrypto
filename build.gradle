@@ -1,0 +1,12 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+repositories {
+    jcenter()
+}
+
+dependencies {}
+
+// Define the main class for the application
+mainClassName = 'com.coneill.rsa.App'
+
