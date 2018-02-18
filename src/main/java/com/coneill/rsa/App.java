@@ -6,8 +6,7 @@ import java.util.List;
 class App {
 
     public static void main(String[] args) throws NoSuchInverseException {
-        System.out.println("44/77 mod(131) = "
-                + divm(new BigInteger("131"), new BigInteger("47"), new BigInteger("77")));
+        System.out.println(expm(new BigInteger("33"), new BigInteger("27"), new BigInteger("17")));
     }
 
     /**
@@ -96,34 +95,32 @@ class App {
      */
 
     private static BigInteger divm(BigInteger mod, BigInteger a, BigInteger b) throws NoSuchInverseException {
-        System.out.println(invm(b, mod));
         return a.multiply(invm(b, mod)).mod(mod);
     }
-//
-//    /**
-//     * Square & Multiply implementation of modular exponentiation
-//     * @return
-//     */
-//
-//    private static BigInteger expm(BigInteger mod, ) {
-//        return null;
-//    }
-//
-//    private static BigInteger modularExponentiation(String modulus, int exponent, byte [] password){
-//        BigInteger result = BigInteger.ONE;
-//        BigInteger mod = new BigInteger(modulus,16);
-//        BigInteger pw = new BigInteger(password);
-//        String exponentBinRep = Integer.toBinaryString(exponent);
-//
-//        for(int i = 0; i < exponentBinRep.length(); i++){
-//            if(exponentBinRep.charAt(i) == '1'){
-//                result = result.multiply(pw).mod(mod);
-//            }
-//            pw = pw.multiply(pw).mod(mod);
-//        }
-//        return result;
-//    }
-//
+
+    /**
+     * Practical 5:
+     * Exponentiation modulo m
+     * ST. expm(m,a,k) computes a(to the k) modulo m
+     * (Square & Multiply Implementation)
+     * @param mod modulus
+     * @param a
+     * @param k
+     * @return result of the exponentiation
+     */
+
+    private static BigInteger expm(BigInteger mod, BigInteger a, BigInteger k ) {
+        String exponentAsString = k.toString(2);
+        BigInteger result = BigInteger.ONE;
+        for (int i = 0; i < exponentAsString.length(); i++) {
+            if (exponentAsString.charAt(i) == '1') {
+                result = result.multiply(a).mod(mod);
+            }
+            a = a.multiply(a).mod(mod);
+        }
+        return result;
+    }
+
     /**
      * Practical 6 :
      * factors (x) will return a list of integer values that are the factors of x.
