@@ -3,12 +3,11 @@ package com.coneill.rsa;
 import java.math.BigInteger;
 import java.util.List;
 
-public class App {
+class App {
 
-    public static void main(String[] args) {
-        for(int i = 1; i < 8; i++) {
-            System.out.println(phi(new BigInteger(Integer.toString(i))));
-        }
+    public static void main(String[] args) throws NoSuchInverseException {
+        System.out.println("44/77 mod(131) = "
+                + divm(new BigInteger("131"), new BigInteger("47"), new BigInteger("77")));
     }
 
     /**
@@ -28,14 +27,15 @@ public class App {
      * Practical 2: XGCD
      * Extended Euclidean Algorithm
      * Solves the equation ax + by = gcd(a, b) for x
+     * Note assumes gcd(a, mod) = 1
      * @param a
-     * @param b
+     * @param mod
      * @return
      */
 
-    private static BigInteger[] xgcd(BigInteger a, BigInteger b) {
+    private static BigInteger[] xgcd(BigInteger a, BigInteger mod) {
         BigInteger x = a;
-        BigInteger y = b;
+        BigInteger y = mod;
         BigInteger x0 = BigInteger.ONE;
         BigInteger x1 = BigInteger.ZERO;
         BigInteger y0 = BigInteger.ZERO;
@@ -72,17 +72,17 @@ public class App {
 
     /**
      * Practical 3:
-     * Calculates the multiplicative inverse of a mod n
-     * @param a
-     * @param n
+     * Calculates the multiplicative inverse of a mod n (if it exists)
+     * @param a candidate
+     * @param n modulus
      * @return
-     * @throws NoSuchInverseException
+     * @throws NoSuchInverseException if a multiplicitive inverse doesn't exist in Zn for a
      */
     private static BigInteger invm(BigInteger a, BigInteger n) throws NoSuchInverseException {
         if (!gcd(a, n).equals(BigInteger.ONE)) {
-            throw new NoSuchInverseException();
+            throw new NoSuchInverseException("A multiplicitive inverse does not exist for: " + a + " in Z" + n);
         }
-        return null; // todo
+        return xgcd(a, n)[1].mod(n);
     }
 
     /**
@@ -95,8 +95,9 @@ public class App {
      *
      */
 
-    private static BigInteger divm(BigInteger mod, BigInteger a, BigInteger b) {
-        return null; // todo
+    private static BigInteger divm(BigInteger mod, BigInteger a, BigInteger b) throws NoSuchInverseException {
+        System.out.println(invm(b, mod));
+        return a.multiply(invm(b, mod)).mod(mod);
     }
 //
 //    /**
