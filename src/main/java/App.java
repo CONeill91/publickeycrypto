@@ -1,12 +1,15 @@
-package com.coneill.rsa;
-
 import java.math.BigInteger;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 class App {
 
     public static void main(String[] args) throws NoSuchInverseException {
-        System.out.println(expm(new BigInteger("33"), new BigInteger("27"), new BigInteger("17")));
+//        System.out.println(expm(new BigInteger("33"), new BigInteger("27"), new BigInteger("17")));
+        System.out.println(prime(512).bitLength());
+
     }
 
     /**
@@ -110,7 +113,7 @@ class App {
      */
 
     private static BigInteger expm(BigInteger mod, BigInteger a, BigInteger k ) {
-        String exponentAsString = k.toString(2);
+        String exponentAsString = new StringBuilder(k.toString(2)).reverse().toString();
         BigInteger result = BigInteger.ONE;
         for (int i = 0; i < exponentAsString.length(); i++) {
             if (exponentAsString.charAt(i) == '1') {
@@ -122,7 +125,7 @@ class App {
     }
 
     /**
-     * Practical 6 :
+     * Practical 6 : // todo
      * factors (x) will return a list of integer values that are the factors of x.
      * Note : If a prime p has a power e > 0 in the factorization of x, then p should appear e times in the result
      * @param number number to be factored
@@ -148,5 +151,46 @@ class App {
             }
         }
         return count;
+    }
+
+    /** Practical 8:
+     * Fermat's primality test ( Note : Not deterministic)
+     * @param x number to be tested
+     * @param t number of iterations to test
+     * @return whether x is probably prime
+     */
+
+    private static boolean fermat(BigInteger x, int t) {
+        BigInteger min = new BigInteger("2");
+        BigInteger max = x.subtract(new BigInteger("2"));
+        int bitLength = max.subtract(min).bitLength();
+
+        for(int i = 0; i < t; i++) {
+            BigInteger a;
+            while (true) {
+                a = new BigInteger(bitLength, new Random());
+                if (a.compareTo(new BigInteger("2")) == 1 && a.compareTo(x.subtract(new BigInteger("2"))) == -1) {
+                    break;
+                }
+            }
+            BigInteger result = expm(x, a, x.subtract(BigInteger.ONE));
+            if(!(result.compareTo(BigInteger.ONE) == 0)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /** Practical 9:
+     * Generates a `bitsize`-bit prime number
+     * @param n - width of the random biginteger to generate
+     * @return prime number which is `bitsize` wide
+     */
+    private static BigInteger prime(int n) {
+        BigInteger prime;
+        do {
+            prime = new BigInteger(n, new Random());
+        } while(!fermat(prime, 40));
+        return prime;
     }
 }

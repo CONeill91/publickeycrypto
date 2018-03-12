@@ -8,5 +8,5 @@ repositories {
 dependencies {}
 
 // Define the main class for the application
-mainClassName = 'com.coneill.rsa.App'
+mainClassName = 'App'
 
